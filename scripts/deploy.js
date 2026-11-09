@@ -1,5 +1,7 @@
 /**
- * Déploiement des 5 contrats Fitness Chain (ordre de la section 9.6 de docs/SPEC.md).
+ * Déploiement des contrats Fitness Chain (ordre de la section 9.6 de docs/SPEC.md).
+ * Seuls les contrats déjà écrits sont déployés ; les autres (ou ceux dont une
+ * dépendance manque) sont ignorés sans erreur.
  *
  *   npm run deploy:local     (réseau localhost, nœud Hardhat lancé avec `npm run node`)
  *   npm run deploy:sepolia   (réseau Sepolia, variables du fichier .env)
@@ -15,6 +17,7 @@ const { exportToFrontend } = require("./utils/export-frontend");
 const { ethers, network } = hre;
 
 const LOCAL_CHAIN_IDS = [31337n];
+const CONTRACTS = ["FitCoin", "CenterDAO", "CoachCertificate", "GymManager", "RewardManager"];
 const ONE_DAY = 24 * 60 * 60;
 
 function parseList(value) {
@@ -94,26 +97,50 @@ async function main() {
   founders.forEach((addr, i) => console.log(`  - ${names[i]} : ${addr}`));
   console.log(`Période de vote : ${votingPeriod} secondes\n`);
 
+  // Seuls les contrats déjà écrits (artefact compilé présent) sont déployés.
+  const available = {};
+  for (const name of CONTRACTS) {
+    available[name] = await hre.artifacts.artifactExists(name);
+  }
+  const addresses = {};
+  const skipped = [];
+
+  /** Déploie `name` si son artefact existe et si ses dépendances sont déployées. */
+  async function deployIfReady(name, dependencies, buildArgs) {
+    if (!available[name]) {
+      skipped.push(`${name} (contrat pas encore écrit)`);
+      return null;
+    }
+    const missing = dependencies.filter((dep) => !addresses[dep]);
+    if (missing.length > 0) {
+      skipped.push(`${name} (dépend de ${missing.join(", ")})`);
+      return null;
+    }
+    const deployed = await deployContract(name, buildArgs());
+    addresses[name] = deployed.address;
+    return deployed;
+  }
+
   // 1. FitCoin
-  const fitCoin = await deployContract("FitCoin");
+  const fitCoin = await deployIfReady("FitCoin", [], () => []);
 
   // 2. CenterDAO
-  const centerDao = await deployContract("CenterDAO", [founders, names, votingPeriod]);
+  await deployIfReady("CenterDAO", [], () => [founders, names, votingPeriod]);
 
   // 3. CoachCertificate
-  const coachCertificate = await deployContract("CoachCertificate", [centerDao.address, fitCoin.address]);
+  await deployIfReady("CoachCertificate", ["CenterDAO", "FitCoin"], () => [addresses.CenterDAO, addresses.FitCoin]);
 
   // 4. GymManager
-  const gymManager = await deployContract("GymManager", [fitCoin.address, coachCertificate.address]);
+  await deployIfReady("GymManager", ["FitCoin", "CoachCertificate"], () => [addresses.FitCoin, addresses.CoachCertificate]);
 
   // 5. RewardManager
   const welcomeBonus = ethers.parseUnits("50", 18);
   const dailyReward = ethers.parseUnits("2", 18);
   const streakBonus = ethers.parseUnits("10", 18);
   const streakLength = 7;
-  const rewardManager = await deployContract("RewardManager", [
-    fitCoin.address,
-    gymManager.address,
+  const rewardManager = await deployIfReady("RewardManager", ["FitCoin", "GymManager"], () => [
+    addresses.FitCoin,
+    addresses.GymManager,
     welcomeBonus,
     dailyReward,
     streakBonus,
@@ -121,18 +148,22 @@ async function main() {
   ]);
 
   // 6. Autoriser RewardManager à créer des FTC
-  console.log("→ Autorisation de RewardManager comme minter de FitCoin…");
-  const tx = await fitCoin.contract.setMinter(rewardManager.address, true);
-  await tx.wait();
-  console.log("  RewardManager est maintenant minter\n");
+  if (fitCoin && rewardManager) {
+    console.log("→ Autorisation de RewardManager comme minter de FitCoin…");
+    const tx = await fitCoin.contract.setMinter(rewardManager.address, true);
+    await tx.wait();
+    console.log("  RewardManager est maintenant minter\n");
+  }
 
-  const addresses = {
-    FitCoin: fitCoin.address,
-    CenterDAO: centerDao.address,
-    CoachCertificate: coachCertificate.address,
-    GymManager: gymManager.address,
-    RewardManager: rewardManager.address,
-  };
+  if (Object.keys(addresses).length === 0) {
+    throw new Error("Aucun contrat à déployer : écrivez et compilez au moins un contrat.");
+  }
+
+  if (skipped.length > 0) {
+    console.log("\nContrats ignorés :");
+    skipped.forEach((s) => console.log(`  - ${s}`));
+    console.log("");
+  }
 
   console.log("Récapitulatif des adresses :");
   console.table(Object.entries(addresses).map(([contrat, adresse]) => ({ contrat, adresse })));

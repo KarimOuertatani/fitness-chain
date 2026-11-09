@@ -22,6 +22,7 @@ function readJson(file, fallback) {
  * Écrit les adresses déployées et les ABI dans le frontend.
  *
  * - `frontend/src/config/addresses.json` : fusion par chainId, sans écraser les autres réseaux.
+ *   L'entrée du réseau déployé est remplacée (évite de garder des adresses d'un ancien nœud).
  * - `frontend/src/config/abis/<Nom>.json` : uniquement le champ `abi` de l'artefact compilé.
  *
  * @param {number|string|bigint} chainId identifiant du réseau
@@ -35,7 +36,7 @@ function exportToFrontend(chainId, addresses) {
 
   // 1. Adresses (fusion)
   const all = readJson(ADDRESSES_FILE, {});
-  all[key] = { ...(all[key] || {}), ...addresses };
+  all[key] = { ...addresses };
   fs.writeFileSync(ADDRESSES_FILE, JSON.stringify(all, null, 2) + "\n");
   console.log(`✔ Adresses écrites dans ${path.relative(process.cwd(), ADDRESSES_FILE)} (réseau ${key})`);
 
