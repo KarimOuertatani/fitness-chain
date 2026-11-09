@@ -5,7 +5,7 @@ import { Building2, Coins, ExternalLink, Pencil, Plus, Send, UserRound, Users } 
 import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
-import { getContract } from "@/lib/contracts";
+import { getContract, GYM_CONTRACTS } from "@/lib/contracts";
 import { toIds } from "@/lib/mappers";
 import { readGymCoaches, readGyms } from "@/lib/reads";
 import { formatFTC } from "@/lib/format";
@@ -27,7 +27,9 @@ function GymDashboard({ gym }: { gym: Gym }) {
   const [tab, setTab] = useState<TabKey>("candidatures");
   const [editing, setEditing] = useState(false);
   const { metadata } = useMetadata(gym.metadataURI);
-  const { data: coaches, loading } = useContractData((p) => readGymCoaches(p, gym.id), ["gym-coaches", gym.id]);
+  const { data: coaches, loading } = useContractData((p) => readGymCoaches(p, gym.id), ["gym-coaches", gym.id], {
+    requires: GYM_CONTRACTS,
+  });
 
   return (
     <div className="flex flex-col gap-6">
@@ -82,14 +84,15 @@ function GymDashboard({ gym }: { gym: Gym }) {
 }
 
 function SalleContent() {
-  const { address, deployed } = useWallet();
+  const { address, isAvailable } = useWallet();
+  const deployed = isAvailable(GYM_CONTRACTS);
   const [selected, setSelected] = useState<string | null>(null);
   const [registering, setRegistering] = useState(false);
 
   const { data: gyms, loading, error, reload } = useContractData(
     async (provider) => readGyms(provider, toIds(await getContract("GymManager", provider).getGymsOf(address))),
     ["my-gyms", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: GYM_CONTRACTS }
   );
 
   if (!deployed) return <NotDeployedState what="votre salle" />;

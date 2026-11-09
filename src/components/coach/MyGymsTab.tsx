@@ -6,7 +6,7 @@ import { Building2, Coins, DoorOpen, Dumbbell, Pencil, Send, Undo2 } from "lucid
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, GYM_CONTRACTS } from "@/lib/contracts";
 import { sameAddress, toIds } from "@/lib/mappers";
 import { readAllGyms, readApplications, readGymCoaches } from "@/lib/reads";
 import { formatDate, formatFTC, tryParseFTC } from "@/lib/format";
@@ -91,10 +91,10 @@ export function MyGymsTab() {
       return { gymById, applications, work: work.filter((w) => !!w.gym), available, certified: Boolean(certified) };
     },
     ["coach-gyms", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: GYM_CONTRACTS }
   );
 
-  if (!isAvailable()) return <NotDeployedState what="les salles (GymManager)" />;
+  if (!isAvailable(GYM_CONTRACTS)) return <NotDeployedState what="les salles (GymManager)" />;
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorState message={error} onRetry={reload} />;
   if (!data) return null;

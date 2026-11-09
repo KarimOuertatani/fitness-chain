@@ -6,7 +6,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
 import { useNow } from "@/hooks/useNow";
-import { getContract } from "@/lib/contracts";
+import { getContract, GYM_CONTRACTS } from "@/lib/contracts";
 import { ZERO_ADDRESS, sameAddress, toQuote, toSubscription } from "@/lib/mappers";
 import { readGym, readGymCoaches } from "@/lib/reads";
 import { formatDate, formatFTC, joursRestants, shortAddress } from "@/lib/format";
@@ -23,7 +23,8 @@ const MIN_MONTHS = 1;
 const MAX_MONTHS = 12;
 
 export function GymDetail({ id }: { id: string }) {
-  const { deployed, address } = useWallet();
+  const { isAvailable, address } = useWallet();
+  const deployed = isAvailable(GYM_CONTRACTS);
   const now = useNow();
   const gymId = /^\d+$/.test(id) ? BigInt(id) : 0n;
 
@@ -34,7 +35,9 @@ export function GymDetail({ id }: { id: string }) {
 
   const { data, loading, error, reload } = useContractData(
     async (provider) => {
-      if (gymId === 0n) return null;
+      // getGym rejette un identifiant inconnu : on vérifie d'abord le nombre de salles
+      const count = BigInt(await getContract("GymManager", provider).getGymCount());
+      if (gymId === 0n || gymId > count) return null;
       const gym = await readGym(provider, gymId);
       if (gym.id === 0n || sameAddress(gym.owner, ZERO_ADDRESS)) return null;
       const certificate = getContract("CoachCertificate", provider);
@@ -49,14 +52,15 @@ export function GymDetail({ id }: { id: string }) {
         subscription,
       };
     },
-    ["gym-detail", gymId, address]
+    ["gym-detail", gymId, address],
+    { requires: GYM_CONTRACTS }
   );
 
   const coachAddress = withCoach && coach ? coach : ZERO_ADDRESS;
   const { data: quote, loading: quoting } = useContractData(
     async (provider) => toQuote(await getContract("GymManager", provider).quote(gymId, coachAddress, BigInt(months))),
     ["quote", gymId, coachAddress, months],
-    { enabled: !!data && (!withCoach || !!coach) }
+    { enabled: !!data && (!withCoach || !!coach), requires: GYM_CONTRACTS }
   );
 
   const { metadata } = useMetadata(data?.gym.metadataURI);

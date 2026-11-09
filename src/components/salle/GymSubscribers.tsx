@@ -4,7 +4,7 @@ import type { EventLog } from "ethers";
 import { UserRound } from "lucide-react";
 import { useContractData } from "@/hooks/useContractData";
 import { useNow } from "@/hooks/useNow";
-import { getContract } from "@/lib/contracts";
+import { getContract, GYM_CONTRACTS } from "@/lib/contracts";
 import { ZERO_ADDRESS, sameAddress, toSubscription } from "@/lib/mappers";
 import { formatDate, joursRestants, shortAddress } from "@/lib/format";
 import { AddressText } from "@/components/shared/AddressText";
@@ -22,7 +22,8 @@ export function GymSubscribers({ gymId }: { gymId: bigint }) {
         members.map(async (member) => ({ member, ...toSubscription(await gm.getSubscription(member, gymId)) }))
       );
     },
-    ["gym-subscribers", gymId]
+    ["gym-subscribers", gymId],
+    { requires: GYM_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={2} />;

@@ -4,7 +4,7 @@ import { Check, Send, X } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, GYM_CONTRACTS } from "@/lib/contracts";
 import { toIds } from "@/lib/mappers";
 import { readApplications, readCertificatesOf, readTrainings } from "@/lib/reads";
 import { formatDate, formatFTC } from "@/lib/format";
@@ -98,7 +98,8 @@ export function GymApplications({ gymId }: { gymId: bigint }) {
         })),
       }));
     },
-    ["gym-applications", gymId]
+    ["gym-applications", gymId],
+    { requires: GYM_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={2} />;

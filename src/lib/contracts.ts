@@ -13,6 +13,9 @@ export type ContractName = (typeof CONTRACT_NAMES)[number];
 /** Contrats nécessaires aux formations et certificats (espaces centre, coach, page Vérifier). */
 export const CERTIFICATE_CONTRACTS: readonly ContractName[] = ["FitCoin", "CenterDAO", "CoachCertificate"];
 
+/** Contrats nécessaires aux salles, au recrutement des coachs et aux abonnements. */
+export const GYM_CONTRACTS: readonly ContractName[] = [...CERTIFICATE_CONTRACTS, "GymManager"];
+
 type AddressBook = Partial<Record<ContractName, string>>;
 
 /** addresses.json : { "31337": { "FitCoin": "0x…", … }, "11155111": { … } } — rempli par deploy.js */

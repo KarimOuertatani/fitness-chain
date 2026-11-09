@@ -1,5 +1,6 @@
 "use client";
 
+import { GYM_CONTRACTS } from "@/lib/contracts";
 import Link from "next/link";
 import { ArrowRight, Building2, Users } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
@@ -41,12 +42,13 @@ function GymCard({ gym, coachCount }: { gym: Gym; coachCount: number }) {
 }
 
 export function GymDirectory() {
-  const { deployed } = useWallet();
+  const { isAvailable } = useWallet();
+  const deployed = isAvailable(GYM_CONTRACTS);
   const { data, loading, error, reload } = useContractData(async (provider) => {
     const gyms = (await readAllGyms(provider)).filter((g) => g.active);
     const counts = await Promise.all(gyms.map(async (g) => (await readGymCoaches(provider, g.id)).length));
     return gyms.map((gym, i) => ({ gym, coachCount: counts[i] }));
-  }, ["gym-directory"]);
+  }, ["gym-directory"], { requires: GYM_CONTRACTS });
 
   return (
     <>
