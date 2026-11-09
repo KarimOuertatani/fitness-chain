@@ -75,6 +75,12 @@ export function isDeployed(chainId: number = TARGET_CHAIN_ID): boolean {
   return CONTRACT_NAMES.every((name) => typeof book[name] === "string" && book[name]!.length > 0);
 }
 
+/** Contrats ayant une adresse pour ce réseau (déploiement partiel possible). */
+export function getDeployedContracts(chainId: number = TARGET_CHAIN_ID): ContractName[] {
+  const book = getAddresses(chainId);
+  return CONTRACT_NAMES.filter((name) => typeof book[name] === "string" && book[name]!.length > 0);
+}
+
 /**
  * Instancie un contrat Fitness Chain.
  * - Lectures : passer le provider de lecture (getReadProvider()).

@@ -8,7 +8,8 @@ import { Card, Skeleton } from "@/components/ui";
 
 /** Carte héro en dégradé avec le solde FTC. */
 export function BalanceCard({ subtitle }: { subtitle?: string }) {
-  const { address, deployed } = useWallet();
+  const { address, isAvailable } = useWallet();
+  const deployed = isAvailable(["FitCoin"]);
   const { balance, loading, error } = useFtcBalance();
 
   return (

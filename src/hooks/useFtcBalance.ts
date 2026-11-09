@@ -11,7 +11,7 @@ export function useFtcBalance(account?: string | null) {
   const { data, loading, error, reload } = useContractData(
     async (provider) => BigInt(await getContract("FitCoin", provider).balanceOf(target)),
     ["ftc-balance", target],
-    { enabled: !!target }
+    { enabled: !!target, requires: ["FitCoin"] }
   );
   return { balance: data, loading, error, reload };
 }

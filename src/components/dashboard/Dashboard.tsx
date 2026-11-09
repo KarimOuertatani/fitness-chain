@@ -66,7 +66,7 @@ function SectionLink({ item, index, mine }: { item: NavItem; index: number; mine
 }
 
 function DashboardContent() {
-  const { address, deployed } = useWallet();
+  const { address, deployed, isAvailable } = useWallet();
   const { roles } = useRoles();
   const { balance, loading: balanceLoading } = useFtcBalance();
   const now = useNow();
@@ -119,7 +119,7 @@ function DashboardContent() {
       <section className="flex flex-col gap-4">
         <SectionTitle>Activités du jour</SectionTitle>
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          <StatCard icon={Coins} tone="gold" label="Solde" loading={deployed && balanceLoading} value={<span className="text-gold">{formatFTC(balance ?? null)}</span>} />
+          <StatCard icon={Coins} tone="gold" label="Solde" loading={isAvailable(["FitCoin"]) && balanceLoading} value={<span className="text-gold">{formatFTC(balance ?? null)}</span>} />
           <StatCard icon={Flame} tone="orange" label="Série de récompenses" teal loading={deployed && loading} value={stats ? `${stats.streak.toString()} j` : "—"} hint="Jours consécutifs" />
           <StatCard icon={CalendarCheck} tone="cyan" label="Abonnements actifs" teal loading={deployed && loading} value={stats ? stats.activeSubscriptions : "—"} />
           <StatCard icon={BadgeCheck} tone="green" label="Certificats" loading={deployed && loading} value={stats ? stats.certificates : "—"} />

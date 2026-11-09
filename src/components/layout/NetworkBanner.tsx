@@ -1,6 +1,7 @@
 "use client";
 
-import { AlertTriangle, Download, RefreshCw, ServerCrash } from "lucide-react";
+import { AlertTriangle, Download, Info, RefreshCw, ServerCrash } from "lucide-react";
+import { CONTRACT_NAMES } from "@/lib/contracts";
 import { useWallet } from "@/hooks/useWallet";
 import { Button, ButtonLink } from "@/components/ui";
 
@@ -11,11 +12,24 @@ import { Button, ButtonLink } from "@/components/ui";
  * - mauvais réseau.
  */
 export function NetworkBanner() {
-  const { deployed, hasMetaMask, isConnected, isCorrectNetwork, network, switchNetwork } = useWallet();
+  const { deployed, deployedContracts, hasMetaMask, isConnected, isCorrectNetwork, network, switchNetwork } = useWallet();
+  const missing = CONTRACT_NAMES.filter((n) => !deployedContracts.includes(n));
+  const partial = deployedContracts.length > 0 && !deployed;
 
   return (
     <div className="mb-4 flex flex-col gap-3 empty:hidden">
-      {!deployed && (
+      {partial && (
+        <div role="status" className="flex items-start gap-3 rounded-2xl border border-cyan/30 bg-cyan/10 p-4 text-sm">
+          <Info className="mt-0.5 size-5 shrink-0 text-cyan" aria-hidden />
+          <p className="min-w-0 text-white/80">
+            <span className="font-semibold text-cyan">Déploiement partiel :</span> {deployedContracts.join(", ")} disponible
+            {deployedContracts.length > 1 ? "s" : ""}. Pas encore déployé{missing.length > 1 ? "s" : ""} : {missing.join(", ")} — les
+            pages qui en dépendent restent désactivées.
+          </p>
+        </div>
+      )}
+
+      {deployedContracts.length === 0 && (
         <div role="status" className="flex items-start gap-3 rounded-2xl border border-warning/35 bg-warning/10 p-4 text-sm">
           <ServerCrash className="mt-0.5 size-5 shrink-0 text-warning" aria-hidden />
           <div className="min-w-0">

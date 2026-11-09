@@ -22,7 +22,7 @@ export function BuyFtcCard() {
   const { data: preview, loading } = useContractData(
     async (provider) => BigInt(await getContract("FitCoin", provider).previewPurchase(wei ?? 0n)),
     ["preview", wei],
-    { enabled: valid }
+    { enabled: valid, requires: ["FitCoin"] }
   );
 
   const buy = async () => {

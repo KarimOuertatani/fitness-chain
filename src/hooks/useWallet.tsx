@@ -12,11 +12,12 @@ import {
 } from "react";
 import { BrowserProvider, getAddress, type JsonRpcSigner, type Provider } from "ethers";
 import { TARGET_CHAIN_ID, TARGET_NETWORK, type NetworkConfig } from "@/config/networks";
-import { getReadProvider, isDeployed } from "@/lib/contracts";
+import { CONTRACT_NAMES, getDeployedContracts, getReadProvider, isDeployed, type ContractName } from "@/lib/contracts";
 import { WrongNetworkError, translateError } from "@/lib/errors";
 import { toast } from "sonner";
 
 const DISCONNECTED_KEY = "fitnesschain:disconnected";
+const DEPLOYED_CONTRACTS = getDeployedContracts(TARGET_CHAIN_ID);
 
 export interface WalletContextValue {
   /** null tant que le navigateur n'a pas été inspecté (rendu serveur) */
@@ -29,7 +30,11 @@ export interface WalletContextValue {
   isCorrectNetwork: boolean;
   /** Les 5 contrats ont une adresse pour le réseau cible */
   deployed: boolean;
-  /** Connecté, bon réseau et contrats déployés : les écritures sont possibles */
+  /** Contrats ayant une adresse pour le réseau cible (déploiement partiel possible) */
+  deployedContracts: readonly ContractName[];
+  /** true si tous les contrats demandés sont déployés */
+  isAvailable: (names?: readonly ContractName[]) => boolean;
+  /** Connecté, bon réseau et au moins un contrat déployé : les écritures sont possibles */
   canWrite: boolean;
   connecting: boolean;
   connect: () => Promise<void>;
@@ -213,6 +218,11 @@ export function WalletProvider({ children }: { children: ReactNode }) {
   }, [hasMetaMask, isCorrectNetwork]);
 
   const deployed = isDeployed(TARGET_CHAIN_ID);
+  const deployedContracts = DEPLOYED_CONTRACTS;
+  const isAvailable = useCallback(
+    (names: readonly ContractName[] = CONTRACT_NAMES) => names.every((n) => deployedContracts.includes(n)),
+    [deployedContracts]
+  );
 
   const value = useMemo<WalletContextValue>(
     () => ({
@@ -224,7 +234,9 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       isConnected: !!address,
       isCorrectNetwork,
       deployed,
-      canWrite: !!address && isCorrectNetwork && deployed,
+      deployedContracts,
+      isAvailable,
+      canWrite: !!address && isCorrectNetwork && deployedContracts.length > 0,
       connecting,
       connect,
       disconnect,
@@ -240,6 +252,8 @@ export function WalletProvider({ children }: { children: ReactNode }) {
       chainId,
       isCorrectNetwork,
       deployed,
+      deployedContracts,
+      isAvailable,
       connecting,
       connect,
       disconnect,

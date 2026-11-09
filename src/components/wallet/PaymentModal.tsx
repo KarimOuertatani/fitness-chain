@@ -95,7 +95,7 @@ export function PaymentModal({
   const { data: allowance } = useContractData(
     async (provider) => BigInt(await getContract("FitCoin", provider).allowance(address, spenderAddress)),
     ["allowance", address, spenderAddress, open],
-    { enabled: open && !!address && !!spenderAddress }
+    { enabled: open && !!address && !!spenderAddress, requires: ["FitCoin", spender] }
   );
   const needsApproval = allowance === undefined ? undefined : amount > 0n && allowance < amount;
   const insufficient = balance !== undefined && balance < amount;

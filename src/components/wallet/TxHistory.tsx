@@ -109,6 +109,7 @@ export function TxHistory() {
   const { address } = useWallet();
   const { data, loading, error } = useContractData((provider) => loadHistory(provider, address as string), ["history", address], {
     enabled: !!address,
+    requires: ["FitCoin"],
   });
 
   return (
