@@ -1,0 +1,213 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   Fitness Chain — identité visuelle (inspirée de FitForge)
+   Thème sombre, bleu nuit profond, accents violet électrique et cyan.
+   ========================================================================== */
+
+:root {
+  --bg-deep: #090e1a;
+  --bg: #0d1226;
+  --bg-elevated: #151b3b;
+  --bg-glow: #1c224e;
+  --surface: rgba(30, 27, 67, 0.65);
+  --surface-teal: rgba(13, 51, 68, 0.65);
+  --input: #24243f;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --primary: #7c3aed;
+  --primary-light: #8b5cf6;
+  --indigo: #6c59fa;
+  --blue: #3b82f6;
+  --cyan: #22d3ee;
+  --cyan-bright: #0fddfc;
+  --success: #22c55e;
+  --warning: #eab308;
+  --danger: #ef4444;
+  --orange: #f97316;
+  --gold: #f5b83d;
+  --text: #ffffff;
+  --text-muted: #94a3b8;
+  --text-subtle: #64748b;
+
+  --gradient-page:
+    radial-gradient(60rem 40rem at 0% 0%, rgba(42, 27, 94, 0.95), transparent 60%),
+    radial-gradient(50rem 36rem at 100% 0%, rgba(20, 48, 90, 0.9), transparent 60%),
+    linear-gradient(180deg, #1c224e 0%, #0d1226 45%, #090e1a 100%);
+  --gradient-primary: linear-gradient(90deg, #7c3aed, #14a5df);
+  --gradient-secondary: linear-gradient(90deg, #0fddfc, #7358fe);
+  --gradient-hero: linear-gradient(135deg, #7c3aed, #3b82f6);
+  --gradient-title: linear-gradient(90deg, #8b5cf6, #22d3ee);
+  --gradient-progress: linear-gradient(90deg, #0fddfc, #6c59fa);
+
+  color-scheme: dark;
+}
+
+/* Jetons exposés à Tailwind (bg-surface, text-muted, border-border, …) */
+@theme inline {
+  --color-bg-deep: var(--bg-deep);
+  --color-bg: var(--bg);
+  --color-bg-elevated: var(--bg-elevated);
+  --color-bg-glow: var(--bg-glow);
+  --color-surface: var(--surface);
+  --color-surface-teal: var(--surface-teal);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-indigo: var(--indigo);
+  --color-blue: var(--blue);
+  --color-cyan: var(--cyan);
+  --color-cyan-bright: var(--cyan-bright);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-orange: var(--orange);
+  --color-gold: var(--gold);
+  --color-fg: var(--text);
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  --shadow-glow-primary: 0 8px 30px -6px rgba(124, 58, 237, 0.6);
+  --shadow-glow-cyan: 0 8px 30px -6px rgba(15, 221, 252, 0.45);
+  --shadow-card-hover: 0 0 0 1px rgba(255, 255, 255, 0.16), 0 12px 40px -12px rgba(124, 58, 237, 0.45);
+}
+
+/* --------------------------------------------------------------------------
+   Utilitaires
+   -------------------------------------------------------------------------- */
+
+@utility glass {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
+@utility glass-teal {
+  background-color: var(--surface-teal);
+  border: 1px solid var(--border);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+}
+
+@utility bg-gradient-primary {
+  background-image: var(--gradient-primary);
+}
+
+@utility bg-gradient-secondary {
+  background-image: var(--gradient-secondary);
+}
+
+@utility bg-gradient-hero {
+  background-image: var(--gradient-hero);
+}
+
+@utility bg-gradient-progress {
+  background-image: var(--gradient-progress);
+}
+
+@utility text-gradient {
+  background-image: var(--gradient-title);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+
+html {
+  background-color: var(--bg-deep);
+}
+
+body {
+  min-height: 100dvh;
+  background-color: transparent;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/* Fond fixe derrière tout le contenu (évite background-attachment: fixed sur mobile) */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--bg);
+  background-image: var(--gradient-page);
+  pointer-events: none;
+}
+
+::selection {
+  background-color: rgba(34, 211, 238, 0.35);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Barre de défilement discrète */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.12) transparent;
+}
+
+/* Lecteur QR (html5-qrcode) */
+#qr-reader video {
+  border-radius: 1.25rem;
+  object-fit: cover;
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+.animate-orbit {
+  animation: orbit 18s linear infinite;
+}
+
+.animate-orbit-reverse {
+  animation: orbit 26s linear infinite reverse;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3.2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-orbit,
+  .animate-orbit-reverse,
+  .animate-pulse-glow {
+    animation: none;
+  }
+}
