@@ -1,0 +1,18 @@
+# Dépendances
+node_modules/
+
+# Variables d'environnement (le modèle .env.example reste suivi)
+.env
+.env.*
+!.env.example
+
+# Hardhat
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+gas-report.txt
+
+# Système
+.DS_Store
