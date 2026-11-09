@@ -30,7 +30,9 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="fr" className={`${inter.variable} antialiased`}>
+    // suppressHydrationWarning : certaines extensions de navigateur ajoutent des attributs à <html>
+    // (ex. bbai-tooltip-injected) avant l'hydratation. Ne concerne que les attributs de cette balise.
+    <html lang="fr" className={`${inter.variable} antialiased`} suppressHydrationWarning>
       <body className="font-sans">
         <Providers>
           <a
