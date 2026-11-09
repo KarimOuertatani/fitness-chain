@@ -6,7 +6,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toIds } from "@/lib/mappers";
 import { readTrainings } from "@/lib/reads";
 import { formatFTC, pluralDays } from "@/lib/format";
@@ -70,7 +70,7 @@ export function TrainingsTab() {
       return (await readTrainings(provider, ids)).reverse();
     },
     ["center-trainings", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: CERTIFICATE_CONTRACTS }
   );
 
   return (

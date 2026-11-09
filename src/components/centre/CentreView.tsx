@@ -1,5 +1,6 @@
 "use client";
 
+import { CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { useState } from "react";
 import { Award, BookOpen, Inbox, Landmark, Vote } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
@@ -15,7 +16,8 @@ import { IssuedCertificatesTab } from "@/components/centre/IssuedCertificatesTab
 type TabKey = "formations" | "demandes" | "certificats";
 
 function CentreContent() {
-  const { deployed } = useWallet();
+  const { isAvailable } = useWallet();
+  const deployed = isAvailable(CERTIFICATE_CONTRACTS);
   const { data, loading, error, reload } = useCenterStatus();
   const [tab, setTab] = useState<TabKey>("formations");
 

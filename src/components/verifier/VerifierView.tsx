@@ -1,5 +1,6 @@
 "use client";
 
+import { CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { useState } from "react";
 import { FileUp, Hash, QrCode, Search } from "lucide-react";
 import { toast } from "sonner";
@@ -23,7 +24,8 @@ function parseCertificateId(text: string): bigint | null {
 }
 
 export function VerifierView() {
-  const { deployed } = useWallet();
+  const { isAvailable } = useWallet();
+  const deployed = isAvailable(CERTIFICATE_CONTRACTS);
   const [mode, setMode] = useState<Mode>("id");
   const [input, setInput] = useState("");
   const [id, setId] = useState<bigint | null>(null);

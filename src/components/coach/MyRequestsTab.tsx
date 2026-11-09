@@ -4,7 +4,7 @@ import { Inbox, Undo2 } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toCenter, toIds } from "@/lib/mappers";
 import { readRequests, readTrainings } from "@/lib/reads";
 import { formatDate, formatFTC } from "@/lib/format";
@@ -63,7 +63,7 @@ export function MyRequestsTab() {
       return { requests, titles: Object.fromEntries(trainings.map((t) => [t.id.toString(), t.title])), centers };
     },
     ["coach-requests", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: CERTIFICATE_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={3} />;

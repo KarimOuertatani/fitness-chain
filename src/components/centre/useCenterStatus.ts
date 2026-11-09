@@ -2,7 +2,7 @@
 
 import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toCenter } from "@/lib/mappers";
 
 /** Statut DAO de l'adresse connectée. */
@@ -15,6 +15,6 @@ export function useCenterStatus() {
       return { active: Boolean(active), center: toCenter(center) };
     },
     ["center-status", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: CERTIFICATE_CONTRACTS }
   );
 }

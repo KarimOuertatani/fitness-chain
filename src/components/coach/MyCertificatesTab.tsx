@@ -6,7 +6,7 @@ import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
 import { useOrigin } from "@/hooks/useOrigin";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { readCenterName, readCertificatesOf, readTrainings } from "@/lib/reads";
 import { formatDate } from "@/lib/format";
 import { ipfsUrl } from "@/lib/ipfs";
@@ -102,7 +102,7 @@ export function MyCertificatesTab() {
         .reverse();
     },
     ["coach-certificates", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: CERTIFICATE_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={2} />;

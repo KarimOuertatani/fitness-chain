@@ -4,7 +4,7 @@ import { useState, type DragEvent } from "react";
 import { FileUp, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { hashFile } from "@/lib/hash";
 import { translateError } from "@/lib/errors";
 import { readCertificateResult } from "@/lib/reads";
@@ -30,7 +30,7 @@ export function VerifyByDocument() {
       return { ...result, status: Number(status) as CertStatus };
     },
     ["verify-document", file?.hash],
-    { enabled: !!file }
+    { enabled: !!file, requires: CERTIFICATE_CONTRACTS }
   );
 
   const handle = async (f: File | undefined) => {

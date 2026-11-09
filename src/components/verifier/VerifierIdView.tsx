@@ -1,5 +1,6 @@
 "use client";
 
+import { CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { ArrowLeft, ShieldQuestion } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { ButtonLink, Card, EmptyState, PageHeader } from "@/components/ui";
@@ -7,7 +8,8 @@ import { NotDeployedState } from "@/components/shared/NotDeployedState";
 import { VerifyResultLoader } from "@/components/verifier/VerifyResultLoader";
 
 export function VerifierIdView({ id }: { id: string }) {
-  const { deployed } = useWallet();
+  const { isAvailable } = useWallet();
+  const deployed = isAvailable(CERTIFICATE_CONTRACTS);
   const valid = /^\d+$/.test(id) && BigInt(id) > 0n;
 
   return (

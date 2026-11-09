@@ -5,7 +5,7 @@ import { Check, FileCheck2, Inbox, X } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toIds } from "@/lib/mappers";
 import { readRequests, readTrainings } from "@/lib/reads";
 import { formatDate, formatFTC } from "@/lib/format";
@@ -86,7 +86,7 @@ export function RequestsTab({ centerName }: { centerName: string }) {
       return { requests, titles };
     },
     ["center-requests", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: CERTIFICATE_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={3} />;

@@ -5,7 +5,7 @@ import { Award, ExternalLink, ShieldOff } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { sameAddress } from "@/lib/mappers";
 import { readAllCertificates, readTrainings } from "@/lib/reads";
 import { formatDate } from "@/lib/format";
@@ -65,7 +65,7 @@ export function IssuedCertificatesTab() {
       return { items: mine, titles };
     },
     ["center-certificates", address],
-    { enabled: !!address }
+    { enabled: !!address, requires: CERTIFICATE_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={3} />;

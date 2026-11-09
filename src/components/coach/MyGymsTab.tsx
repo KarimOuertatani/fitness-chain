@@ -12,6 +12,7 @@ import { readAllGyms, readApplications, readGymCoaches } from "@/lib/reads";
 import { formatDate, formatFTC, tryParseFTC } from "@/lib/format";
 import { ApplicationStatus, type Gym } from "@/types";
 import { ErrorState } from "@/components/shared/ErrorState";
+import { NotDeployedState } from "@/components/shared/NotDeployedState";
 import { ApplicationStatusBadge } from "@/components/shared/StatusBadges";
 import { PaymentModal } from "@/components/wallet/PaymentModal";
 import { Alert, Button, ButtonLink, Card, EmptyState, Input, Modal, SectionTitle, Select, SkeletonList } from "@/components/ui";
@@ -58,7 +59,7 @@ function PriceModal({ entry, onClose }: { entry: WorkEntry; onClose: () => void 
 }
 
 export function MyGymsTab() {
-  const { address, canWrite } = useWallet();
+  const { address, canWrite, isAvailable } = useWallet();
   const { run, pending } = useTx();
   const [gymId, setGymId] = useState("");
   const [priceInput, setPriceInput] = useState("20");
@@ -93,6 +94,7 @@ export function MyGymsTab() {
     { enabled: !!address }
   );
 
+  if (!isAvailable()) return <NotDeployedState what="les salles (GymManager)" />;
   if (loading) return <SkeletonList count={3} />;
   if (error) return <ErrorState message={error} onRetry={reload} />;
   if (!data) return null;

@@ -10,6 +10,9 @@ import { rewardManagerAbi } from "@/lib/abi/rewardManager";
 export const CONTRACT_NAMES = ["FitCoin", "CenterDAO", "CoachCertificate", "GymManager", "RewardManager"] as const;
 export type ContractName = (typeof CONTRACT_NAMES)[number];
 
+/** Contrats nécessaires aux formations et certificats (espaces centre, coach, page Vérifier). */
+export const CERTIFICATE_CONTRACTS: readonly ContractName[] = ["FitCoin", "CenterDAO", "CoachCertificate"];
+
 type AddressBook = Partial<Record<ContractName, string>>;
 
 /** addresses.json : { "31337": { "FitCoin": "0x…", … }, "11155111": { … } } — rempli par deploy.js */

@@ -5,7 +5,7 @@ import { BookOpen, CalendarClock, Landmark, Send, ShieldCheck } from "lucide-rea
 import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
-import { getContract } from "@/lib/contracts";
+import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toCenter, toIds } from "@/lib/mappers";
 import { readAllTrainings, readRequests } from "@/lib/reads";
 import { formatFTC, pluralDays } from "@/lib/format";
@@ -89,7 +89,8 @@ export function CatalogTab() {
         }))
         .reverse();
     },
-    ["catalog", address]
+    ["catalog", address],
+    { requires: CERTIFICATE_CONTRACTS }
   );
 
   if (loading) return <SkeletonList count={3} />;

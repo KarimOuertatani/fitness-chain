@@ -1,5 +1,6 @@
 "use client";
 
+import { CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { useState } from "react";
 import { Award, BookOpen, Dumbbell, Inbox } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
@@ -14,7 +15,8 @@ import { MyGymsTab } from "@/components/coach/MyGymsTab";
 type TabKey = "catalogue" | "demandes" | "certificats" | "salles";
 
 export function CoachView() {
-  const { deployed } = useWallet();
+  const { isAvailable } = useWallet();
+  const deployed = isAvailable(CERTIFICATE_CONTRACTS);
   const [tab, setTab] = useState<TabKey>("catalogue");
 
   return (
