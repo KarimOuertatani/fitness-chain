@@ -13,7 +13,8 @@ import { ProposeAddForm, ProposeRemoveForm } from "@/components/gouvernance/Prop
 import { useGovernance } from "@/components/gouvernance/useGovernance";
 
 export function GovernanceView() {
-  const { deployed, address } = useWallet();
+  const { isAvailable, address } = useWallet();
+  const deployed = isAvailable(["CenterDAO"]);
   const now = useNow();
   const { data, loading, error, reload } = useGovernance();
   const names = new Map(data?.centers.map((c) => [c.address.toLowerCase(), c.name]) ?? []);

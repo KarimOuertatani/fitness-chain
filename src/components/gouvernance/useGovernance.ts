@@ -70,6 +70,7 @@ export function useGovernance() {
         isMember: Boolean(isMember),
       };
     },
-    ["governance", address]
+    ["governance", address],
+    { requires: ["CenterDAO"] }
   );
 }
