@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 
+/** Bloc de chargement. Rendu en <span> (affiché en bloc) pour rester valide dans un <p>. */
 export function Skeleton({ className }: { className?: string }) {
-  return <div className={cn("animate-pulse rounded-2xl bg-white/[0.07]", className)} aria-hidden />;
+  return <span className={cn("block animate-pulse rounded-2xl bg-white/[0.07]", className)} aria-hidden />;
 }
 
 /** Liste de cartes squelettes pendant le chargement. */
