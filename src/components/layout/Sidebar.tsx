@@ -6,9 +6,8 @@ import { cn } from "@/lib/utils";
 import { useRoles } from "@/hooks/useRoles";
 import { Logo } from "@/components/layout/Logo";
 import { MAIN_NAV, SPACES_NAV, isActivePath, type NavItem } from "@/components/layout/nav";
-import { ConnectButton } from "@/components/wallet/ConnectButton";
 
-function NavLink({ item, highlighted }: { item: NavItem; highlighted: boolean }) {
+function NavLink({ item, mine }: { item: NavItem; mine: boolean }) {
   const pathname = usePathname();
   const active = isActivePath(pathname, item.href);
   const Icon = item.icon;
@@ -17,42 +16,49 @@ function NavLink({ item, highlighted }: { item: NavItem; highlighted: boolean })
       href={item.href}
       aria-current={active ? "page" : undefined}
       className={cn(
-        "group flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-medium transition",
-        active ? "bg-primary/20 text-primary-light shadow-[inset_0_0_0_1px_rgba(139,92,246,0.35)]" : "text-muted hover:bg-white/5 hover:text-white"
+        "group relative flex h-10 items-center gap-3 rounded-xl px-3 text-sm font-medium transition",
+        active ? "bg-primary/15 text-white" : "text-muted hover:bg-white/[0.04] hover:text-white"
       )}
     >
-      <Icon className="size-5 shrink-0" aria-hidden />
+      {active && <span className="absolute top-2 bottom-2 left-0 w-[3px] rounded-full bg-primary-light" aria-hidden />}
+      <Icon className={cn("size-[18px] shrink-0", active ? "text-primary-light" : "text-subtle group-hover:text-muted")} aria-hidden />
       <span className="flex-1 truncate">{item.label}</span>
-      {highlighted && (
-        <span className="size-2 rounded-full bg-cyan shadow-[0_0_8px_rgba(34,211,238,0.9)]" title="Votre rôle" aria-label="Votre rôle" />
+      {mine && (
+        <span className="rounded-md bg-cyan/10 px-1.5 py-0.5 text-[10px] font-semibold text-cyan" title="Correspond à l'un de vos rôles">
+          Vous
+        </span>
       )}
     </Link>
   );
 }
 
-export function Sidebar() {
+function NavGroup({ title, items }: { title: string; items: NavItem[] }) {
   const { roles } = useRoles();
   return (
-    <aside className="glass fixed inset-y-4 left-4 z-40 hidden w-64 flex-col rounded-3xl p-4 lg:flex">
-      <div className="px-2 pt-2 pb-6">
+    <div className="flex flex-col gap-0.5">
+      <p className="px-3 pb-2 text-[11px] font-semibold tracking-[0.14em] text-subtle uppercase">{title}</p>
+      {items.map((item) => (
+        <NavLink key={item.href} item={item} mine={!!item.role && roles[item.role]} />
+      ))}
+    </div>
+  );
+}
+
+/** Barre latérale desktop en verre dépoli, pleine hauteur. */
+export function Sidebar() {
+  return (
+    <aside className="fixed inset-y-0 left-0 z-40 hidden w-[17rem] flex-col border-r border-border bg-bg-elevated/55 backdrop-blur-xl lg:flex">
+      <div className="flex h-16 shrink-0 items-center border-b border-border px-5">
         <Logo />
       </div>
-      <nav aria-label="Navigation principale" className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto">
-        <div className="flex flex-col gap-1">
-          <p className="px-3 pb-1 text-[11px] font-semibold tracking-[0.18em] text-subtle uppercase">Général</p>
-          {MAIN_NAV.map((item) => (
-            <NavLink key={item.href} item={item} highlighted={!!item.role && roles[item.role]} />
-          ))}
-        </div>
-        <div className="flex flex-col gap-1">
-          <p className="px-3 pb-1 text-[11px] font-semibold tracking-[0.18em] text-subtle uppercase">Espaces</p>
-          {SPACES_NAV.map((item) => (
-            <NavLink key={item.href} item={item} highlighted={!!item.role && roles[item.role]} />
-          ))}
-        </div>
+      <nav aria-label="Navigation principale" className="flex min-h-0 flex-1 flex-col gap-7 overflow-y-auto px-3 py-6">
+        <NavGroup title="Général" items={MAIN_NAV} />
+        <NavGroup title="Espaces" items={SPACES_NAV} />
       </nav>
-      <div className="border-t border-border pt-4">
-        <ConnectButton fullWidth />
+      <div className="border-t border-border p-4">
+        <p className="text-[11px] leading-relaxed text-subtle">
+          Les données affichées sont lues directement sur la blockchain. Aucune base de données.
+        </p>
       </div>
     </aside>
   );

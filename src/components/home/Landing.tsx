@@ -37,7 +37,7 @@ export function Landing() {
   const { address } = useWallet();
 
   return (
-    <div className="flex flex-col gap-14 pb-6 sm:gap-20">
+    <div className="mx-auto flex w-full max-w-6xl flex-col gap-14 px-4 pt-6 pb-16 sm:gap-20 sm:px-6">
       {/* Héro */}
       <section className="relative flex flex-col items-center pt-6 text-center sm:pt-12">
         <div className="relative flex size-64 items-center justify-center sm:size-80" aria-hidden>
@@ -81,7 +81,7 @@ export function Landing() {
       </section>
 
       {/* Je suis… */}
-      <section aria-labelledby="roles-title" className="flex flex-col gap-5">
+      <section id="roles" aria-labelledby="roles-title" className="flex scroll-mt-24 flex-col gap-5">
         <SectionTitle as="h2">
           <span id="roles-title">Je suis…</span>
         </SectionTitle>
@@ -106,7 +106,7 @@ export function Landing() {
       </section>
 
       {/* Comment ça marche */}
-      <section aria-labelledby="how-title" className="flex flex-col gap-5">
+      <section id="fonctionnement" aria-labelledby="how-title" className="flex scroll-mt-24 flex-col gap-5">
         <SectionTitle as="h2" tone="cyan">
           <span id="how-title">Comment ça marche</span>
         </SectionTitle>

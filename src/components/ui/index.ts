@@ -1,5 +1,5 @@
 export { Button, ButtonLink, buttonClasses } from "./Button";
-export { Card } from "./Card";
+export { Card, CardHeader } from "./Card";
 export { Input, Textarea, Select, FileInput, Checkbox } from "./Input";
 export { Badge, type BadgeTone } from "./Badge";
 export { Modal } from "./Modal";
@@ -14,3 +14,4 @@ export { IconTile, type IconTone } from "./IconTile";
 export { PageHeader } from "./PageHeader";
 export { InfoRow } from "./InfoRow";
 export { Alert } from "./Alert";
+export { Avatar } from "./Avatar";

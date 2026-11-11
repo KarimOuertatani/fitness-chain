@@ -12,6 +12,9 @@
   --bg-glow: #1c224e;
   --surface: rgba(30, 27, 67, 0.65);
   --surface-teal: rgba(13, 51, 68, 0.65);
+  /* Surface imbriquée (lignes, champs de lecture) à l'intérieur d'une carte */
+  --surface-2: rgba(255, 255, 255, 0.035);
+  --surface-3: rgba(255, 255, 255, 0.06);
   --input: #24243f;
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.16);
@@ -51,6 +54,8 @@
   --color-bg-glow: var(--bg-glow);
   --color-surface: var(--surface);
   --color-surface-teal: var(--surface-teal);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
   --color-input: var(--input);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
@@ -71,9 +76,11 @@
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
-  --shadow-glow-primary: 0 8px 30px -6px rgba(124, 58, 237, 0.6);
-  --shadow-glow-cyan: 0 8px 30px -6px rgba(15, 221, 252, 0.45);
-  --shadow-card-hover: 0 0 0 1px rgba(255, 255, 255, 0.16), 0 12px 40px -12px rgba(124, 58, 237, 0.45);
+  /* Lueurs réservées aux éléments clés (bouton principal, carte héro) */
+  --shadow-glow-primary: 0 10px 28px -10px rgba(124, 58, 237, 0.65);
+  --shadow-glow-cyan: 0 10px 28px -10px rgba(15, 221, 252, 0.45);
+  --shadow-card: 0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 20px 40px -24px rgba(0, 0, 0, 0.6);
+  --shadow-card-hover: 0 1px 0 0 rgba(255, 255, 255, 0.06) inset, 0 24px 48px -20px rgba(124, 58, 237, 0.35);
 }
 
 /* --------------------------------------------------------------------------
@@ -85,6 +92,7 @@
   border: 1px solid var(--border);
   -webkit-backdrop-filter: blur(24px);
   backdrop-filter: blur(24px);
+  box-shadow: var(--shadow-card);
 }
 
 @utility glass-teal {
@@ -130,6 +138,16 @@ body {
   background-color: transparent;
   color: var(--text);
   overflow-x: hidden;
+  font-size: 15px;
+  line-height: 1.55;
+  /* Inter : chiffres alignés, « 1 » et « l » distincts */
+  font-feature-settings: "cv11", "ss01", "tnum";
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: -0.015em;
 }
 
 /* Fond fixe derrière tout le contenu (évite background-attachment: fixed sur mobile) */

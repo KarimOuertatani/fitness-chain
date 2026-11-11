@@ -191,12 +191,16 @@ export function GymDetail({ id }: { id: string }) {
                 disabled={certifiedCoaches.length === 0}
                 onChange={(checked) => {
                   setWithCoach(checked);
-                  if (!checked) setCoach("");
+                  // Présélectionne le premier coach certifié (modifiable dans la liste)
+                  setCoach(checked ? (certifiedCoaches[0]?.coach ?? "") : "");
                 }}
               />
 
               {withCoach && (
                 <div className="flex flex-col gap-2" role="radiogroup" aria-label="Choix du coach">
+                  <p className="text-sm font-medium text-muted">
+                    {coach ? "Votre coach (cliquez pour changer) :" : "Choisissez votre coach :"}
+                  </p>
                   {certifiedCoaches.map((c) => (
                     <button
                       key={c.coach}
@@ -217,7 +221,7 @@ export function GymDetail({ id }: { id: string }) {
               )}
 
               <div className="rounded-2xl bg-white/[0.04] px-4 py-2">
-                <InfoRow label={`Salle (${formatFTC(gym.monthlyFee)} × ${months})`} value={quote ? formatFTC(quote.gymPart) : "…"} />
+                <InfoRow label={`Salle (${formatFTC(gym.monthlyFee)} × ${months})`} value={formatFTC(quote?.gymPart ?? gym.monthlyFee * BigInt(months))} />
                 {withCoach && <InfoRow label={`Coach (${formatFTC(selectedCoach?.price ?? null)} × ${months})`} value={quote && coach ? formatFTC(quote.coachPart) : "—"} />}
                 <div className="mt-1 border-t border-border pt-1">
                   <InfoRow label="Total" strong value={<span className="text-gold">{canQuote ? (quoting && !quote ? "…" : formatFTC(quote?.total ?? null)) : "—"}</span>} />

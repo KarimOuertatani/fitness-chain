@@ -10,7 +10,7 @@ export type ButtonSize = "sm" | "md" | "lg";
 const VARIANTS: Record<ButtonVariant, string> = {
   primary: "bg-gradient-primary text-white shadow-glow-primary hover:brightness-110",
   secondary: "bg-gradient-secondary text-white shadow-glow-cyan hover:brightness-110",
-  glass: "glass text-white hover:border-border-strong hover:bg-white/10",
+  glass: "border border-border bg-white/[0.06] text-white backdrop-blur-xl hover:border-border-strong hover:bg-white/10",
   ghost: "bg-transparent text-muted hover:bg-white/5 hover:text-white",
   success: "border border-success/40 bg-success/15 text-success hover:bg-success/25",
   danger: "border border-danger/40 bg-danger/15 text-danger hover:bg-danger/25",

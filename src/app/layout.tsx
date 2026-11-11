@@ -2,10 +2,6 @@ import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/components/layout/Providers";
-import { Sidebar } from "@/components/layout/Sidebar";
-import { BottomNav } from "@/components/layout/BottomNav";
-import { Header } from "@/components/layout/Header";
-import { NetworkBanner } from "@/components/layout/NetworkBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -41,17 +37,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           >
             Aller au contenu
           </a>
-          <Sidebar />
-          <div className="min-h-dvh px-4 pb-32 sm:px-6 lg:pb-12 lg:pl-[18.5rem] lg:pr-8">
-            <div className="mx-auto w-full max-w-6xl">
-              <Header />
-              <NetworkBanner />
-              <main id="contenu" className="min-w-0">
-                {children}
-              </main>
-            </div>
-          </div>
-          <BottomNav />
+          {children}
         </Providers>
       </body>
     </html>
