@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
 
 export type BadgeTone = "violet" | "cyan" | "yellow" | "green" | "red" | "orange" | "gray" | "gold";
@@ -22,7 +22,7 @@ export function Badge({
   className,
 }: {
   tone?: BadgeTone;
-  icon?: LucideIcon;
+  icon?: ComponentType<{ className?: string }>;
   children: ReactNode;
   className?: string;
 }) {

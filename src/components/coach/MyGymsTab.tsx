@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { formatUnits } from "ethers";
-import { Building2, Coins, DoorOpen, Dumbbell, Pencil, Send, Undo2 } from "lucide-react";
+import { Building2, DoorOpen, Dumbbell, Pencil, Send, Undo2 } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
@@ -15,7 +15,7 @@ import { ErrorState } from "@/components/shared/ErrorState";
 import { NotDeployedState } from "@/components/shared/NotDeployedState";
 import { ApplicationStatusBadge } from "@/components/shared/StatusBadges";
 import { PaymentModal } from "@/components/wallet/PaymentModal";
-import { Alert, Button, ButtonLink, Card, EmptyState, Input, Modal, SectionTitle, Select, SkeletonList } from "@/components/ui";
+import { Alert, Button, ButtonLink, Card, EmptyState, Input, Modal, SectionTitle, Select, SkeletonList, FtcGlyph, FtcAmount } from "@/components/ui";
 
 interface WorkEntry {
   gym: Gym;
@@ -53,7 +53,7 @@ function PriceModal({ entry, onClose }: { entry: WorkEntry; onClose: () => void 
         </div>
       }
     >
-      <Input label="Prix du coaching privé (par mois)" inputMode="decimal" icon={Coins} suffix="FTC" value={price} onChange={(e) => setPrice(e.target.value)} error={price && value === null ? "Prix invalide." : null} />
+      <Input label="Prix du coaching privé (par mois)" inputMode="decimal" icon={FtcGlyph} suffix="FTC" value={price} onChange={(e) => setPrice(e.target.value)} error={price && value === null ? "Prix invalide." : null} />
     </Modal>
   );
 }
@@ -132,7 +132,7 @@ export function MyGymsTab() {
             <Input
               label="Mon prix de coaching privé (par mois)"
               inputMode="decimal"
-              icon={Coins}
+              icon={FtcGlyph}
               suffix="FTC"
               value={priceInput}
               onChange={(e) => setPriceInput(e.target.value)}
@@ -140,7 +140,7 @@ export function MyGymsTab() {
             />
             {selectedGym && (
               <p className="text-sm text-muted">
-                Frais d&apos;affiliation placés en séquestre : <span className="font-semibold text-gold">{formatFTC(selectedGym.affiliationFee)}</span>{" "}
+                Frais d&apos;affiliation placés en séquestre : <FtcAmount value={selectedGym.affiliationFee} className="font-semibold text-gold" />{" "}
                 (remboursés si la salle refuse).
               </p>
             )}
@@ -164,7 +164,7 @@ export function MyGymsTab() {
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-semibold text-white">{w.gym.name}</p>
                   <p className="text-xs text-subtle">
-                    Mon coaching : <span className="font-semibold text-gold">{formatFTC(w.price)}</span> / mois
+                    Mon coaching : <FtcAmount value={w.price} className="font-semibold text-gold" /> / mois
                   </p>
                 </div>
                 <div className="flex shrink-0 flex-wrap gap-2">

@@ -7,12 +7,12 @@ import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
 import { readAllGyms, readGymCoaches } from "@/lib/reads";
-import { formatFTC } from "@/lib/format";
+
 import type { Gym } from "@/types";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { IpfsImage } from "@/components/shared/IpfsImage";
 import { NotDeployedState } from "@/components/shared/NotDeployedState";
-import { Badge, Card, EmptyState, PageHeader, SkeletonList } from "@/components/ui";
+import { Badge, Card, EmptyState, PageHeader, SkeletonList, FtcAmount } from "@/components/ui";
 
 function GymCard({ gym, coachCount }: { gym: Gym; coachCount: number }) {
   const { metadata } = useMetadata(gym.metadataURI);
@@ -25,7 +25,7 @@ function GymCard({ gym, coachCount }: { gym: Gym; coachCount: number }) {
           {metadata?.description && <p className="line-clamp-2 text-sm text-muted">{metadata.description}</p>}
           <div className="mt-auto flex items-center justify-between gap-3 pt-2">
             <div>
-              <p className="text-xl font-extrabold text-gold">{formatFTC(gym.monthlyFee)}</p>
+              <FtcAmount value={gym.monthlyFee} className="text-xl font-extrabold text-gold" />
               <p className="text-xs text-subtle">par mois</p>
             </div>
             <Badge tone="cyan" icon={Users}>

@@ -17,7 +17,7 @@ import { NotDeployedState } from "@/components/shared/NotDeployedState";
 import { AddressText } from "@/components/shared/AddressText";
 import { PaymentModal } from "@/components/wallet/PaymentModal";
 import { ConnectButton } from "@/components/wallet/ConnectButton";
-import { Alert, Badge, Button, ButtonLink, Card, Checkbox, EmptyState, InfoRow, SectionTitle, Skeleton } from "@/components/ui";
+import { Alert, Badge, Button, ButtonLink, Card, Checkbox, EmptyState, InfoRow, SectionTitle, Skeleton, FtcAmount, FtcGlyph } from "@/components/ui";
 
 const MIN_MONTHS = 1;
 const MAX_MONTHS = 12;
@@ -57,7 +57,7 @@ export function GymDetail({ id }: { id: string }) {
   );
 
   const coachAddress = withCoach && coach ? coach : ZERO_ADDRESS;
-  const { data: quote, loading: quoting } = useContractData(
+  const { data: quote } = useContractData(
     async (provider) => toQuote(await getContract("GymManager", provider).quote(gymId, coachAddress, BigInt(months))),
     ["quote", gymId, coachAddress, months],
     { enabled: !!data && (!withCoach || !!coach), requires: GYM_CONTRACTS }
@@ -106,7 +106,9 @@ export function GymDetail({ id }: { id: string }) {
           </div>
           {metadata?.description && <p className="mt-2 text-sm whitespace-pre-line text-muted">{metadata.description}</p>}
           <div className="mt-4 flex flex-wrap gap-2">
-            <Badge tone="gold">{formatFTC(gym.monthlyFee)} / mois</Badge>
+            <Badge tone="gold" icon={FtcGlyph}>
+              {formatFTC(gym.monthlyFee)} / mois
+            </Badge>
             <Badge tone="cyan" icon={Users}>
               {coaches.length} coach{coaches.length > 1 ? "s" : ""}
             </Badge>
@@ -130,7 +132,7 @@ export function GymDetail({ id }: { id: string }) {
                 <div className="min-w-0 flex-1">
                   <AddressText address={c.coach} chars={6} className="text-sm text-white" />
                   <p className="text-xs text-subtle">
-                    <span className="font-semibold text-gold">{formatFTC(c.price)}</span> / mois
+                    <FtcAmount value={c.price} className="font-semibold text-gold" /> / mois
                   </p>
                 </div>
                 {c.certified ? (
@@ -214,7 +216,9 @@ export function GymDetail({ id }: { id: string }) {
                       )}
                     >
                       <span className="truncate font-mono text-sm text-white">{shortAddress(c.coach, 6)}</span>
-                      <span className="shrink-0 text-sm font-semibold text-gold">{formatFTC(c.price)} / mois</span>
+                      <span className="shrink-0 text-sm font-semibold text-gold">
+                        <FtcAmount value={c.price} /> / mois
+                      </span>
                     </button>
                   ))}
                 </div>
@@ -224,7 +228,11 @@ export function GymDetail({ id }: { id: string }) {
                 <InfoRow label={`Salle (${formatFTC(gym.monthlyFee)} × ${months})`} value={formatFTC(quote?.gymPart ?? gym.monthlyFee * BigInt(months))} />
                 {withCoach && <InfoRow label={`Coach (${formatFTC(selectedCoach?.price ?? null)} × ${months})`} value={quote && coach ? formatFTC(quote.coachPart) : "—"} />}
                 <div className="mt-1 border-t border-border pt-1">
-                  <InfoRow label="Total" strong value={<span className="text-gold">{canQuote ? (quoting && !quote ? "…" : formatFTC(quote?.total ?? null)) : "—"}</span>} />
+                  <InfoRow
+                    label="Total"
+                    strong
+                    value={canQuote && quote ? <FtcAmount value={quote.total} className="text-gold" /> : <span className="text-gold">{canQuote ? "…" : "—"}</span>}
+                  />
                 </div>
               </div>
 

@@ -1,8 +1,9 @@
 "use client";
 
+import { FtcGlyph } from "@/components/ui";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, Coins } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useFtcBalance } from "@/hooks/useFtcBalance";
 import { formatFTC } from "@/lib/format";
@@ -32,7 +33,7 @@ function BalancePill() {
       className="hidden h-9 items-center gap-2 rounded-xl border border-gold/25 bg-gold/[0.08] px-3 text-sm font-semibold text-gold tabular-nums transition hover:border-gold/45 sm:inline-flex"
       title="Ouvrir le portefeuille"
     >
-      <Coins className="size-4" aria-hidden />
+      <FtcGlyph className="size-[18px]" />
       {formatFTC(balance ?? null)}
     </Link>
   );

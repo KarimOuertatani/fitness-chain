@@ -11,7 +11,7 @@ import { formatDate, formatFTC } from "@/lib/format";
 import { RequestStatus, type TrainingRequest } from "@/types";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { RequestStatusBadge } from "@/components/shared/StatusBadges";
-import { Button, Card, EmptyState, SkeletonList } from "@/components/ui";
+import { Button, Card, EmptyState, SkeletonList, FtcAmount } from "@/components/ui";
 
 function MyRequestRow({ request, title, centerName, centerActive }: { request: TrainingRequest; title: string; centerName: string; centerActive: boolean }) {
   const { canWrite } = useWallet();
@@ -34,7 +34,7 @@ function MyRequestRow({ request, title, centerName, centerActive }: { request: T
         <p className="mt-1 text-xs text-subtle">
           {centerName || "Centre"}
           {!centerActive && " (exclu)"} · Demande n°{request.id.toString()} · {formatDate(request.createdAt)} ·{" "}
-          <span className="font-semibold text-gold">{formatFTC(request.amount)}</span>
+          <FtcAmount value={request.amount} className="font-semibold text-gold" />
         </p>
         {request.status === RequestStatus.Accepted && !centerActive && (
           <p className="mt-1 text-xs text-orange">Le centre a été exclu : vous pouvez annuler pour être remboursé.</p>

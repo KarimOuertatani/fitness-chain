@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { isAddress } from "ethers";
-import { Coins, Send, User } from "lucide-react";
+import { Send, User } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useFtcBalance } from "@/hooks/useFtcBalance";
 import { getContract } from "@/lib/contracts";
 import { formatFTC, tryParseFTC } from "@/lib/format";
-import { Button, Card, Input, SectionTitle } from "@/components/ui";
+import { Button, Card, Input, SectionTitle, FtcGlyph } from "@/components/ui";
 
 export function TransferCard() {
   const { canWrite, address } = useWallet();
@@ -52,7 +52,7 @@ export function TransferCard() {
           label="Montant"
           inputMode="decimal"
           placeholder="0"
-          icon={Coins}
+          icon={FtcGlyph}
           suffix="FTC"
           value={amountInput}
           onChange={(e) => setAmountInput(e.target.value)}

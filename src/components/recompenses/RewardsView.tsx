@@ -1,6 +1,6 @@
 "use client";
 
-import { CalendarCheck, Flame, Gift, PartyPopper, Sparkles, Trophy, Zap } from "lucide-react";
+import { CalendarCheck, Flame, Gift, PartyPopper, Sparkles, Trophy } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { NotDeployedState } from "@/components/shared/NotDeployedState";
 import { RequireWallet } from "@/components/wallet/RequireWallet";
-import { Alert, Button, ButtonLink, Card, PageHeader, SectionTitle, Skeleton, StatCard } from "@/components/ui";
+import { Alert, Button, ButtonLink, Card, PageHeader, SectionTitle, Skeleton, StatCard, FtcAmount, FtcCoin } from "@/components/ui";
 
 function StreakDots({ streak, length }: { streak: number; length: number }) {
   const filled = streak === 0 ? 0 : ((streak - 1) % length) + 1;
@@ -118,12 +118,12 @@ function RewardsContent() {
       <Card variant="hero" padding="lg" className="overflow-hidden">
         <div className="pointer-events-none absolute -top-20 -right-16 size-72 rounded-full bg-cyan/30 blur-3xl" aria-hidden />
         <div className="relative flex flex-col items-center gap-5 text-center">
-          <span className="flex size-16 items-center justify-center rounded-3xl bg-white/15" aria-hidden>
-            <Zap className="size-8 fill-white text-white" />
-          </span>
+          <FtcCoin size={112} priority className="drop-shadow-[0_12px_28px_rgba(15,221,252,0.4)]" />
           <div>
             <p className="text-sm font-medium text-white/80">Récompense quotidienne</p>
-            <p className="mt-1 text-4xl font-extrabold text-white">+{formatFTC(data.dailyReward)}</p>
+            <p className="mt-1 text-4xl font-extrabold text-white">
+              <FtcAmount value={data.dailyReward} sign="+" />
+            </p>
             <p className="mt-1 text-sm text-white/75">
               +{formatFTC(data.streakBonus)} de bonus tous les {data.streakLength} jours consécutifs
             </p>
@@ -179,7 +179,7 @@ function RewardsContent() {
               <p className="text-sm text-muted">Une seule fois par adhérent</p>
             </div>
           </div>
-          <p className="text-3xl font-extrabold text-gold">{formatFTC(data.welcomeBonus)}</p>
+          <FtcAmount value={data.welcomeBonus} className="text-3xl font-extrabold text-gold" />
           {data.info.welcomeClaimed ? (
             <p className="text-sm font-semibold text-success">✓ Déjà réclamé</p>
           ) : (
@@ -192,7 +192,7 @@ function RewardsContent() {
           icon={Trophy}
           tone="gold"
           label="Total gagné"
-          value={<span className="text-3xl text-gold">{formatFTC(data.info.totalEarned)}</span>}
+          value={<FtcAmount value={data.info.totalEarned} className="text-3xl text-gold" />}
           hint="Bonus de bienvenue, récompenses quotidiennes et bonus de série"
         />
       </div>

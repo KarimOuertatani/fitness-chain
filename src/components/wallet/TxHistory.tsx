@@ -6,8 +6,8 @@ import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { CONTRACT_NAMES, getContract, getContractAddress } from "@/lib/contracts";
 import { ZERO_ADDRESS, sameAddress } from "@/lib/mappers";
-import { formatDate, formatETH, formatFTC, shortAddress } from "@/lib/format";
-import { Card, EmptyState, IconTile, SectionTitle, SkeletonList, type IconTone } from "@/components/ui";
+import { formatDate, formatETH, shortAddress } from "@/lib/format";
+import { Card, EmptyState, IconTile, SectionTitle, SkeletonList, type IconTone, FtcAmount } from "@/components/ui";
 
 type Kind = "purchase" | "sent" | "received" | "reward";
 
@@ -142,10 +142,11 @@ export function TxHistory() {
                       {detail} · {formatDate(item.timestamp, true)}
                     </p>
                   </div>
-                  <span className={`shrink-0 text-sm font-bold ${item.kind === "sent" ? "text-danger" : "text-gold"}`}>
-                    {meta.sign}
-                    {formatFTC(item.amount)}
-                  </span>
+                  <FtcAmount
+                    value={item.amount}
+                    sign={meta.sign}
+                    className={`shrink-0 text-sm font-bold ${item.kind === "sent" ? "text-danger" : "text-gold"}`}
+                  />
                 </li>
               );
             })}

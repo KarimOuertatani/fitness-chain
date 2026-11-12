@@ -8,12 +8,12 @@ import { useMetadata } from "@/hooks/useMetadata";
 import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toCenter, toIds } from "@/lib/mappers";
 import { readAllTrainings, readRequests } from "@/lib/reads";
-import { formatFTC, pluralDays } from "@/lib/format";
+import { pluralDays } from "@/lib/format";
 import { RequestStatus, type Training } from "@/types";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { IpfsImage } from "@/components/shared/IpfsImage";
 import { PaymentModal } from "@/components/wallet/PaymentModal";
-import { Badge, Button, Card, EmptyState, SkeletonList } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, SkeletonList, FtcAmount } from "@/components/ui";
 
 interface CatalogEntry {
   training: Training;
@@ -45,7 +45,7 @@ function TrainingCatalogCard({ entry, onRequest }: { entry: CatalogEntry; onRequ
           </Badge>
         </div>
         <div className="mt-auto flex items-center justify-between gap-3 pt-2">
-          <span className="text-lg font-extrabold text-gold">{formatFTC(training.price)}</span>
+          <FtcAmount value={training.price} className="text-lg font-extrabold text-gold" />
           {entry.alreadyRequested ? (
             <Badge tone="yellow">Déjà demandée</Badge>
           ) : (

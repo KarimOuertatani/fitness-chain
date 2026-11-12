@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Building2, Coins, ExternalLink, Pencil, Plus, Send, UserRound, Users } from "lucide-react";
+import { Building2, ExternalLink, Pencil, Plus, Send, UserRound, Users } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useContractData } from "@/hooks/useContractData";
 import { useMetadata } from "@/hooks/useMetadata";
@@ -14,7 +14,7 @@ import { ErrorState } from "@/components/shared/ErrorState";
 import { IpfsImage } from "@/components/shared/IpfsImage";
 import { NotDeployedState } from "@/components/shared/NotDeployedState";
 import { RequireWallet } from "@/components/wallet/RequireWallet";
-import { Badge, Button, ButtonLink, Card, Modal, PageHeader, SectionTitle, Skeleton, StatCard, TabPanel, Tabs } from "@/components/ui";
+import { Badge, Button, ButtonLink, Card, Modal, PageHeader, SectionTitle, Skeleton, StatCard, TabPanel, Tabs, FtcGlyph } from "@/components/ui";
 import { RegisterGymForm } from "@/components/salle/RegisterGymForm";
 import { EditGymModal } from "@/components/salle/EditGymModal";
 import { GymApplications } from "@/components/salle/GymApplications";
@@ -55,7 +55,7 @@ function GymDashboard({ gym }: { gym: Gym }) {
       </Card>
 
       <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
-        <StatCard icon={Coins} tone="gold" label="Abonnement mensuel" value={<span className="text-gold">{formatFTC(gym.monthlyFee)}</span>} />
+        <StatCard icon={FtcGlyph} tone="gold" label="Abonnement mensuel" value={<span className="text-gold">{formatFTC(gym.monthlyFee)}</span>} />
         <StatCard icon={Send} tone="violet" label="Frais d'affiliation" teal value={formatFTC(gym.affiliationFee)} />
         <StatCard icon={Users} tone="cyan" label="Coachs" loading={loading} value={coaches?.length ?? "—"} className="col-span-2 lg:col-span-1" />
       </div>

@@ -8,12 +8,12 @@ import { useContractData } from "@/hooks/useContractData";
 import { getContract, CERTIFICATE_CONTRACTS } from "@/lib/contracts";
 import { toIds } from "@/lib/mappers";
 import { readRequests, readTrainings } from "@/lib/reads";
-import { formatDate, formatFTC } from "@/lib/format";
+import { formatDate } from "@/lib/format";
 import { RequestStatus, type TrainingRequest } from "@/types";
 import { AddressText } from "@/components/shared/AddressText";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { RequestStatusBadge } from "@/components/shared/StatusBadges";
-import { Button, Card, EmptyState, SkeletonList } from "@/components/ui";
+import { Button, Card, EmptyState, SkeletonList, FtcAmount } from "@/components/ui";
 import { CompleteTrainingModal } from "@/components/centre/CompleteTrainingModal";
 
 function RequestRow({
@@ -48,7 +48,9 @@ function RequestRow({
           </span>
           <span>Demande n°{request.id.toString()}</span>
           <span>{formatDate(request.createdAt)}</span>
-          <span className="font-semibold text-gold">{formatFTC(request.amount)} en séquestre</span>
+          <span className="inline-flex items-center gap-1 font-semibold text-gold">
+            <FtcAmount value={request.amount} /> en séquestre
+          </span>
         </div>
       </div>
       <div className="flex shrink-0 flex-wrap gap-2">

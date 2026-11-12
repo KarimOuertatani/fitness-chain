@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
 import { IconTile, type IconTone } from "@/components/ui/IconTile";
 import { Skeleton } from "@/components/ui/Skeleton";
@@ -15,7 +15,7 @@ export function StatCard({
   teal,
   className,
 }: {
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   tone?: IconTone;
   label: string;
   value: ReactNode;

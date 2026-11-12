@@ -4,9 +4,9 @@ import { UserMinus, Users } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
 import { getContract } from "@/lib/contracts";
-import { formatFTC } from "@/lib/format";
+
 import { AddressText } from "@/components/shared/AddressText";
-import { Button, Card, EmptyState, IconTile } from "@/components/ui";
+import { Button, Card, EmptyState, IconTile, FtcAmount } from "@/components/ui";
 
 export function GymTeam({ gymId, coaches }: { gymId: bigint; coaches: { coach: string; price: bigint }[] }) {
   const { canWrite } = useWallet();
@@ -28,7 +28,7 @@ export function GymTeam({ gymId, coaches }: { gymId: bigint; coaches: { coach: s
           <div className="min-w-0 flex-1">
             <AddressText address={c.coach} chars={6} className="text-sm text-white" />
             <p className="text-xs text-subtle">
-              Coaching privé : <span className="font-semibold text-gold">{formatFTC(c.price)}</span> / mois
+              Coaching privé : <FtcAmount value={c.price} className="font-semibold text-gold" /> / mois
             </p>
           </div>
           <Button

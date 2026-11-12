@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import type { ComponentType } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
   Building2,
-  Coins,
   GraduationCap,
   Landmark,
   LayoutDashboard,
@@ -17,7 +17,7 @@ import {
 import { useWallet } from "@/hooks/useWallet";
 import { LogoMark } from "@/components/layout/Logo";
 import { ConnectButton } from "@/components/wallet/ConnectButton";
-import { ButtonLink, Card, IconTile, SectionTitle, type IconTone } from "@/components/ui";
+import { ButtonLink, Card, FtcCoin, FtcGlyph, IconTile, SectionTitle, type IconTone } from "@/components/ui";
 
 const ROLES: { href: string; title: string; text: string; icon: LucideIcon; tone: IconTone; teal?: boolean }[] = [
   { href: "/centre", title: "Un centre", text: "Publiez vos formations et certifiez les coachs sur la blockchain.", icon: Landmark, tone: "violet" },
@@ -26,11 +26,11 @@ const ROLES: { href: string; title: string; text: string; icon: LucideIcon; tone
   { href: "/salles", title: "Un adhérent", text: "Abonnez-vous, choisissez un coach privé et gagnez des FitCoins chaque jour.", icon: UserRound, tone: "gold" },
 ];
 
-const STEPS: { title: string; text: string; icon: LucideIcon }[] = [
+const STEPS: { title: string; text: string; icon: ComponentType<{ className?: string }> }[] = [
   { title: "Gouvernance", text: "Les centres agréés votent l'entrée et l'exclusion des centres dans une DAO, sans administrateur.", icon: Vote },
   { title: "Certification", text: "Le coach paie sa formation en séquestre ; le centre valide la réussite et émet un NFT Soulbound.", icon: ShieldCheck },
   { title: "Recrutement", text: "Les salles recrutent uniquement des coachs dont le certificat est valide on-chain.", icon: Building2 },
-  { title: "Récompenses", text: "Les adhérents paient en FTC et gagnent des bonus quotidiens et des séries de 7 jours.", icon: Coins },
+  { title: "Récompenses", text: "Les adhérents paient en FTC et gagnent des bonus quotidiens et des séries de 7 jours.", icon: FtcGlyph },
 ];
 
 export function Landing() {
@@ -103,6 +103,52 @@ export function Landing() {
             </motion.div>
           ))}
         </div>
+      </section>
+
+      {/* FitCoin */}
+      <section aria-labelledby="fitcoin-title">
+        <Card padding="lg" className="overflow-hidden">
+          <div className="pointer-events-none absolute -top-24 -left-24 size-80 rounded-full bg-primary/25 blur-3xl" aria-hidden />
+          <div className="pointer-events-none absolute -right-20 -bottom-24 size-80 rounded-full bg-cyan/15 blur-3xl" aria-hidden />
+          <div className="relative grid items-center gap-8 md:grid-cols-[minmax(0,1fr)_auto]">
+            <div className="min-w-0">
+              <p className="text-xs font-semibold tracking-[0.16em] text-cyan uppercase">La monnaie de la plateforme</p>
+              <h2 id="fitcoin-title" className="mt-2 text-2xl font-bold text-white sm:text-3xl">
+                FitCoin <span className="text-gold">(FTC)</span>
+              </h2>
+              <p className="mt-3 max-w-xl text-muted">
+                Formations, frais d&apos;affiliation, abonnements et coaching privé : tout se paie en FitCoin. Les
+                paiements sont bloqués dans les contrats tant que le service n&apos;est pas rendu.
+              </p>
+              <ul className="mt-6 grid gap-3 sm:grid-cols-3">
+                {[
+                  { value: "1 ETH", label: "= 10 000 FTC, au taux fixe" },
+                  { value: "Séquestre", label: "remboursé en cas de refus" },
+                  { value: "+2 FTC", label: "par jour pour les adhérents" },
+                ].map((item) => (
+                  <li key={item.value} className="rounded-2xl border border-border bg-surface-2 p-4">
+                    <p className="text-lg font-bold text-white">{item.value}</p>
+                    <p className="mt-1 text-sm text-muted">{item.label}</p>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6">
+                <ButtonLink href="/wallet" icon={FtcGlyph}>
+                  Acheter des FTC
+                </ButtonLink>
+              </div>
+            </div>
+            <motion.div
+              className="mx-auto"
+              initial={{ rotate: -8, scale: 0.94 }}
+              whileInView={{ rotate: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ type: "spring", damping: 14 }}
+            >
+              <FtcCoin size={240} alt="Pièce FitCoin" className="drop-shadow-[0_24px_48px_rgba(124,58,237,0.45)]" />
+            </motion.div>
+          </div>
+        </Card>
       </section>
 
       {/* Comment ça marche */}

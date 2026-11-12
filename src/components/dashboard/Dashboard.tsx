@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, CalendarCheck, Coins, Flame, type LucideIcon } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarCheck, Flame, type LucideIcon } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { useRoles } from "@/hooks/useRoles";
 import { useFtcBalance } from "@/hooks/useFtcBalance";
@@ -14,7 +14,7 @@ import { cn } from "@/lib/utils";
 import { BalanceCard } from "@/components/wallet/BalanceCard";
 import { RequireWallet } from "@/components/wallet/RequireWallet";
 import { MAIN_NAV, SPACES_NAV, type NavItem } from "@/components/layout/nav";
-import { Badge, Card, IconTile, SectionTitle, Skeleton, StatCard, type IconTone } from "@/components/ui";
+import { Badge, Card, IconTile, SectionTitle, Skeleton, StatCard, type IconTone, FtcGlyph } from "@/components/ui";
 
 interface DashboardStats {
   streak: bigint;
@@ -119,7 +119,7 @@ function DashboardContent() {
       <section className="flex flex-col gap-4">
         <SectionTitle>Activités du jour</SectionTitle>
         <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
-          <StatCard icon={Coins} tone="gold" label="Solde" loading={isAvailable(["FitCoin"]) && balanceLoading} value={<span className="text-gold">{formatFTC(balance ?? null)}</span>} />
+          <StatCard icon={FtcGlyph} tone="gold" label="Solde" loading={isAvailable(["FitCoin"]) && balanceLoading} value={<span className="text-gold">{formatFTC(balance ?? null)}</span>} />
           <StatCard icon={Flame} tone="orange" label="Série de récompenses" teal loading={deployed && loading} value={stats ? `${stats.streak.toString()} j` : "—"} hint="Jours consécutifs" />
           <StatCard icon={CalendarCheck} tone="cyan" label="Abonnements actifs" teal loading={deployed && loading} value={stats ? stats.activeSubscriptions : "—"} />
           <StatCard icon={BadgeCheck} tone="green" label="Certificats" loading={deployed && loading} value={stats ? stats.certificates : "—"} />

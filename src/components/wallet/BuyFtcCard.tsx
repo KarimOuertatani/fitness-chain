@@ -7,7 +7,7 @@ import { useTx } from "@/hooks/useTx";
 import { useContractData } from "@/hooks/useContractData";
 import { getContract } from "@/lib/contracts";
 import { formatFTC, tryParseETH } from "@/lib/format";
-import { Button, Card, Input, InfoRow, SectionTitle } from "@/components/ui";
+import { Button, Card, Input, InfoRow, SectionTitle, FtcAmount, FtcCoin } from "@/components/ui";
 
 const PRESETS = ["0.01", "0.03", "0.05", "0.1"];
 
@@ -35,7 +35,9 @@ export function BuyFtcCard() {
 
   return (
     <Card>
-      <SectionTitle tone="cyan">Acheter des FTC</SectionTitle>
+      <SectionTitle tone="cyan" action={<FtcCoin size={40} />}>
+        Acheter des FTC
+      </SectionTitle>
       <p className="mt-2 text-sm text-muted">Taux fixe : 1 ETH = 10 000 FTC.</p>
       <div className="mt-5 flex flex-col gap-4">
         <Input
@@ -64,7 +66,7 @@ export function BuyFtcCard() {
           <InfoRow
             label="Vous recevrez"
             strong
-            value={<span className="text-gold">{valid ? (loading ? "…" : formatFTC(preview ?? null)) : "—"}</span>}
+            value={valid && !loading ? <FtcAmount value={preview ?? null} className="text-gold" /> : <span className="text-gold">{valid ? "…" : "—"}</span>}
           />
         </div>
         <Button icon={ShoppingCart} loading={pending} disabled={!canWrite || !valid} onClick={() => void buy()} fullWidth>

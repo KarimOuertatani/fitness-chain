@@ -15,3 +15,4 @@ export { PageHeader } from "./PageHeader";
 export { InfoRow } from "./InfoRow";
 export { Alert } from "./Alert";
 export { Avatar } from "./Avatar";
+export { FtcCoin, FtcGlyph, FtcAmount } from "./FtcIcon";

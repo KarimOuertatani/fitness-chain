@@ -13,7 +13,7 @@ import { formatFTC, pluralDays } from "@/lib/format";
 import type { Training } from "@/types";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { IpfsImage } from "@/components/shared/IpfsImage";
-import { Badge, Button, Card, EmptyState, SkeletonList } from "@/components/ui";
+import { Badge, Button, Card, EmptyState, SkeletonList, FtcGlyph } from "@/components/ui";
 import { TrainingFormModal } from "@/components/centre/TrainingFormModal";
 
 function TrainingCard({ training, onEdit }: { training: Training; onEdit: () => void }) {
@@ -38,7 +38,9 @@ function TrainingCard({ training, onEdit }: { training: Training; onEdit: () => 
         </div>
         {metadata?.description && <p className="line-clamp-2 text-sm text-muted">{metadata.description}</p>}
         <div className="flex flex-wrap gap-2 text-xs">
-          <Badge tone="gold">{formatFTC(training.price)}</Badge>
+          <Badge tone="gold" icon={FtcGlyph}>
+            {formatFTC(training.price)}
+          </Badge>
           <Badge tone="violet" icon={CalendarClock}>
             {pluralDays(training.durationDays)}
           </Badge>

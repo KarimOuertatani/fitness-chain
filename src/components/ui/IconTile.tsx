@@ -1,4 +1,4 @@
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
 import { cn } from "@/lib/utils";
 
 export type IconTone = "violet" | "cyan" | "blue" | "green" | "yellow" | "red" | "gold" | "orange";
@@ -21,7 +21,7 @@ export function IconTile({
   size = "md",
   className,
 }: {
-  icon: LucideIcon;
+  icon: ComponentType<{ className?: string }>;
   tone?: IconTone;
   size?: "md" | "lg";
   className?: string;

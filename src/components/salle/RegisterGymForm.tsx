@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Building2, Coins, ImageIcon, Save } from "lucide-react";
+import { Building2, ImageIcon, Save } from "lucide-react";
 import { toast } from "sonner";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
@@ -10,7 +10,7 @@ import { getContract } from "@/lib/contracts";
 import { tryParseFTC } from "@/lib/format";
 import { translateError } from "@/lib/errors";
 import { IpfsMissingAlert } from "@/components/shared/IpfsMissingAlert";
-import { Button, FileInput, Input, Textarea } from "@/components/ui";
+import { Button, FileInput, Input, Textarea, FtcGlyph } from "@/components/ui";
 
 /** Formulaire d'inscription d'une salle (registerGym). */
 export function RegisterGymForm({ onDone }: { onDone?: () => void }) {
@@ -65,7 +65,7 @@ export function RegisterGymForm({ onDone }: { onDone?: () => void }) {
       <Input
         label="Abonnement mensuel"
         inputMode="decimal"
-        icon={Coins}
+        icon={FtcGlyph}
         suffix="FTC"
         value={monthly}
         onChange={(e) => setMonthly(e.target.value)}
@@ -74,7 +74,7 @@ export function RegisterGymForm({ onDone }: { onDone?: () => void }) {
       <Input
         label="Frais d'affiliation (coachs)"
         inputMode="decimal"
-        icon={Coins}
+        icon={FtcGlyph}
         suffix="FTC"
         value={affiliation}
         onChange={(e) => setAffiliation(e.target.value)}

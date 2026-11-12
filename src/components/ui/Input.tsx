@@ -1,7 +1,10 @@
 "use client";
 
 import { useId, type InputHTMLAttributes, type ReactNode, type SelectHTMLAttributes, type TextareaHTMLAttributes } from "react";
-import type { LucideIcon } from "lucide-react";
+import type { ComponentType } from "react";
+
+/** Icône lucide ou tout composant acceptant `className` (ex. pièce FitCoin). */
+type IconComponent = ComponentType<{ className?: string }>;
 import { cn } from "@/lib/utils";
 
 const FIELD =
@@ -43,7 +46,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   label?: string;
   hint?: ReactNode;
   error?: string | null;
-  icon?: LucideIcon;
+  icon?: IconComponent;
   /** Élément affiché à droite (ex. « FTC ») */
   suffix?: ReactNode;
   containerClassName?: string;
@@ -102,7 +105,7 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   hint?: ReactNode;
   error?: string | null;
-  icon?: LucideIcon;
+  icon?: IconComponent;
   containerClassName?: string;
 }
 
@@ -136,7 +139,7 @@ export interface FileInputProps {
   file: File | null;
   onChange: (file: File | null) => void;
   hint?: ReactNode;
-  icon?: LucideIcon;
+  icon?: IconComponent;
   disabled?: boolean;
 }
 

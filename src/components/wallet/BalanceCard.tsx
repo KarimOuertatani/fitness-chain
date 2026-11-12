@@ -1,10 +1,9 @@
 "use client";
 
-import { Coins } from "lucide-react";
 import { useFtcBalance } from "@/hooks/useFtcBalance";
 import { useWallet } from "@/hooks/useWallet";
 import { formatFTC, shortAddress } from "@/lib/format";
-import { Card, Skeleton } from "@/components/ui";
+import { Card, Skeleton, FtcCoin } from "@/components/ui";
 
 /** Carte héro en dégradé avec le solde FTC. */
 export function BalanceCard({ subtitle }: { subtitle?: string }) {
@@ -26,9 +25,7 @@ export function BalanceCard({ subtitle }: { subtitle?: string }) {
           {error && <p className="mt-2 text-sm text-white/80">{error}</p>}
           {address && <p className="mt-3 truncate font-mono text-xs text-white/70">{shortAddress(address, 6)}</p>}
         </div>
-        <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-white/15 text-white" aria-hidden>
-          <Coins className="size-6" />
-        </span>
+        <FtcCoin size={96} priority className="-my-2 drop-shadow-[0_10px_24px_rgba(15,221,252,0.35)] sm:size-[112px]" />
       </div>
     </Card>
   );

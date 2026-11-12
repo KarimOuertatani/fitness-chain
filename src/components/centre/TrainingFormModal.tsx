@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarClock, Coins, ImageIcon, Save, Type } from "lucide-react";
+import { CalendarClock, ImageIcon, Save, Type } from "lucide-react";
 import { toast } from "sonner";
 import { useTx } from "@/hooks/useTx";
 import { useWallet } from "@/hooks/useWallet";
@@ -13,7 +13,7 @@ import { tryParseFTC } from "@/lib/format";
 import { translateError } from "@/lib/errors";
 import type { Training } from "@/types";
 import { IpfsMissingAlert } from "@/components/shared/IpfsMissingAlert";
-import { Button, Checkbox, FileInput, Input, Modal, Textarea } from "@/components/ui";
+import { Button, Checkbox, FileInput, Input, Modal, Textarea, FtcGlyph } from "@/components/ui";
 
 function toPositiveInt(value: string): number | null {
   if (!/^\d+$/.test(value.trim())) return null;
@@ -128,7 +128,7 @@ export function TrainingFormModal({ open, onClose, training }: { open: boolean; 
         <Input
           label="Prix"
           inputMode="decimal"
-          icon={Coins}
+          icon={FtcGlyph}
           suffix="FTC"
           value={price}
           onChange={(e) => setPrice(e.target.value)}

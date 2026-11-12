@@ -1,6 +1,8 @@
 import Link from "next/link";
-import type { ButtonHTMLAttributes, ReactNode } from "react";
-import type { LucideIcon } from "lucide-react";
+import type { ButtonHTMLAttributes, ComponentType, ReactNode } from "react";
+
+/** Icône lucide ou tout composant acceptant `className` (ex. pièce FitCoin). */
+type IconComponent = ComponentType<{ className?: string }>;
 import { cn } from "@/lib/utils";
 import { Spinner } from "@/components/ui/Spinner";
 
@@ -25,8 +27,8 @@ const SIZES: Record<ButtonSize, string> = {
 interface CommonProps {
   variant?: ButtonVariant;
   size?: ButtonSize;
-  icon?: LucideIcon;
-  iconRight?: LucideIcon;
+  icon?: IconComponent;
+  iconRight?: IconComponent;
   fullWidth?: boolean;
   className?: string;
   children?: ReactNode;

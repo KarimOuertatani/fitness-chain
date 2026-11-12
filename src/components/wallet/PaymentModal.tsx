@@ -10,7 +10,7 @@ import { useApproveAndCall, type ApproveStep } from "@/hooks/useApproveAndCall";
 import { getContract, getContractAddress, type ContractName } from "@/lib/contracts";
 import { formatFTC } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { Alert, Button, ButtonLink, InfoRow, Modal, Spinner } from "@/components/ui";
+import { Alert, Button, ButtonLink, InfoRow, Modal, Spinner, FtcAmount } from "@/components/ui";
 
 type StepState = "todo" | "active" | "done" | "skipped";
 
@@ -142,7 +142,7 @@ export function PaymentModal({
               <InfoRow key={line.label} label={line.label} value={line.value} />
             ))}
             <div className="mt-1 border-t border-border pt-1">
-              <InfoRow label="Total" strong value={<span className="text-gold">{formatFTC(amount)}</span>} />
+              <InfoRow label="Total" strong value={<FtcAmount value={amount} className="text-gold" />} />
             </div>
           </div>
         )}
@@ -161,7 +161,7 @@ export function PaymentModal({
           <span className="flex items-center gap-2 text-muted">
             <ShieldCheck className="size-4" aria-hidden /> Votre solde
           </span>
-          <span className={cn("font-semibold", insufficient ? "text-danger" : "text-white")}>{formatFTC(balance ?? null)}</span>
+          <FtcAmount value={balance ?? null} className={cn("font-semibold", insufficient ? "text-danger" : "text-white")} />
         </div>
 
         {insufficient && (

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { formatUnits } from "ethers";
-import { Coins, ImageIcon, Save } from "lucide-react";
+import { ImageIcon, Save } from "lucide-react";
 import { toast } from "sonner";
 import { useWallet } from "@/hooks/useWallet";
 import { useTx } from "@/hooks/useTx";
@@ -13,7 +13,7 @@ import { tryParseFTC } from "@/lib/format";
 import { translateError } from "@/lib/errors";
 import type { Gym } from "@/types";
 import { IpfsMissingAlert } from "@/components/shared/IpfsMissingAlert";
-import { Button, Checkbox, FileInput, Input, Modal, Textarea } from "@/components/ui";
+import { Button, Checkbox, FileInput, Input, Modal, Textarea, FtcGlyph } from "@/components/ui";
 
 const toInput = (v: bigint) => formatUnits(v, 18).replace(/\.0$/, "");
 
@@ -80,8 +80,8 @@ export function EditGymModal({ gym, onClose }: { gym: Gym; onClose: () => void }
       }
     >
       <div className="grid gap-4 sm:grid-cols-2">
-        <Input label="Abonnement mensuel" inputMode="decimal" icon={Coins} suffix="FTC" value={monthly} onChange={(e) => setMonthly(e.target.value)} error={monthly && !valid && (monthlyValue === null || monthlyValue === 0n) ? "Doit être supérieur à 0." : null} />
-        <Input label="Frais d'affiliation" inputMode="decimal" icon={Coins} suffix="FTC" value={affiliation} onChange={(e) => setAffiliation(e.target.value)} error={affiliation && affiliationValue === null ? "Montant invalide." : null} />
+        <Input label="Abonnement mensuel" inputMode="decimal" icon={FtcGlyph} suffix="FTC" value={monthly} onChange={(e) => setMonthly(e.target.value)} error={monthly && !valid && (monthlyValue === null || monthlyValue === 0n) ? "Doit être supérieur à 0." : null} />
+        <Input label="Frais d'affiliation" inputMode="decimal" icon={FtcGlyph} suffix="FTC" value={affiliation} onChange={(e) => setAffiliation(e.target.value)} error={affiliation && affiliationValue === null ? "Montant invalide." : null} />
         <Textarea containerClassName="sm:col-span-2" label="Description (IPFS)" value={currentDescription} onChange={(e) => setDescription(e.target.value)} disabled={ipfsMissing} />
         <div className="sm:col-span-2">
           <FileInput label="Nouvelle photo (IPFS)" accept="image/*" file={photo} onChange={setPhoto} icon={ImageIcon} disabled={ipfsMissing} />
